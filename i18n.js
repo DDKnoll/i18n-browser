@@ -65,7 +65,7 @@ var i18n = module.exports = function (locales, opt) {
 
     // you may register helpers in global scope, up to you
     if (typeof this.register === "object") {
-        i18n.resMethods.forEach((method) => {
+        i18n.resMethods.forEach(function(method) {
             self.register[method] = self[method].bind(self);
         });
     }
