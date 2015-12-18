@@ -1,0 +1,34 @@
+{
+  "name": "i18n-browser",
+  "version": "1.0.0",
+  "description": "This is a stripped out version of jeresig's i18n node package.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "sprintf": "^0.1.5"
+  },
+  "devDependencies": {
+    "expresso": ">=0.9.2",
+    "js-yaml": "^3.4.3",
+    "i18n-2": "0.6.2"
+  },
+  "scripts": {
+    "test": "expresso test/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DDKnoll/i18n-browser.git"
+  },
+  "keywords": [
+    "i18n",
+    "browser"
+  ],
+  "author": "Dugan Knoll",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DDKnoll/i18n-browser/issues"
+  },
+  "homepage": "https://github.com/DDKnoll/i18n-browser#readme"
+}
