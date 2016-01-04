@@ -8,6 +8,11 @@ var en = JSON.parse(fs.readFileSync('locales/en.js', 'utf8'));
 
 module.exports = {
 
+	'check non-existent': function () {
+		var i18n = I18n(en);
+		assert.equal(i18n.__('Hello?'), 'Hello?');
+	},
+
 	'check singular': function () {
 		var i18n = I18n(en);
 		assert.equal(i18n.__('Hello'), 'Hello');

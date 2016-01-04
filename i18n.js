@@ -49,20 +49,26 @@ var i18n = module.exports = function (locale, opt) {
     // converts string "Test.test" to its equivalent javascript Test.test
     var dotNotation = function (is, value) {
         if (self.locale.hasOwnProperty(is)) {
-            return self.locale[is];
+            return self.locale[is]; //Found the exact string
         }
 
         if (typeof is === 'string') {
-            return dotNotation(self.locale, is.split('.'), value);
-        } else if (is.length === 1 && value !== undefined) {
-            return self.locale[is[0]] = value;
-        } else if (is.length === 0) {
-            return self.locale;
-        } else {
-            if (self.locale.hasOwnProperty(is[0])) {
-                return dotNotation(self.locale[is[0]], is.slice(1), value);
+            if(is.indexOf('.') >= 0){
+                return dotNotation(self.locale, is.split('.'), value);
             } else {
-                return self.locale[is.join('.')] = is.join('.');
+                return is; // No dot notation, we just don't recognize the string.
+            }
+        } else if (typeof is === 'array'){ // This means the function has been called recursively.
+            if(is.length === 1 && value !== undefined) {
+                return self.locale[is[0]] = value;
+            } else if (is.length === 0) {
+                return self.locale;
+            } else {
+                if (self.locale.hasOwnProperty(is[0])) {
+                    return dotNotation(self.locale[is[0]], is.slice(1), value);
+                } else {
+                    return self.locale[is.join('.')] = is.join('.');
+                }
             }
         }
     }.bind(self);
