@@ -21,12 +21,15 @@ var vsprintf = require("sprintf").vsprintf;
 var i18n = module.exports = function (locale, opt) {
     'use strict';
     var self = {};
-    self.locale = locale;
 
     //  Short Circuit if no locale
     if (!locale) {
-        return false;
-    }
+        self.locale = {};
+    } else if(locale && typeof locale.toObject == 'function' ) {
+		self.locale = locale.toObject(); // for immutable structures.
+	} else {
+		self.locale = locale;
+	}
 
     // Copy over options
     for (var prop in opt) {
