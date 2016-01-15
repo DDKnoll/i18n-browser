@@ -13,5 +13,8 @@
     "one": "Im %%s sitzt ein Affe",
     "other": "Im Baum sitzen %d Affen"
   },
-  "tree": "Baum"
+  "tree": "Baum",
+  "dog": {
+    "puppy": "Hündchen"
+  }
 }

@@ -50,27 +50,34 @@ var i18n = module.exports = function (locale, opt) {
     }
 
     // converts string "Test.test" to its equivalent javascript Test.test
-    var dotNotation = function (is, value) {
-        if (self.locale.hasOwnProperty(is)) {
-            return self.locale[is]; //Found the exact string
+    // 
+    var dotNotation = function(path){
+        var resolved = dotNotationHelper(self.locale, path);
+        return (resolved ? resolved : path);
+    };
+    // Recursive function that iterates down an object
+    var dotNotationHelper = function (object, path) {
+        if (object.hasOwnProperty(path)) {
+            return object[path]; //Found the exact string
         }
 
-        if (typeof is === 'string') {
-            if(is.indexOf('.') >= 0){
-                return dotNotation(self.locale, is.split('.'), value);
+        // Check if we should recurse.
+        if (typeof path === 'string') {
+            if(path.indexOf('.') >= 0){
+                return dotNotationHelper(object, path.split('.'));
             } else {
-                return is; // No dot notation, we just don't recognize the string.
+                return false; // No dot notation, we just don't recognize the string.
             }
-        } else if (typeof is === 'array'){ // This means the function has been called recursively.
-            if(is.length === 1 && value !== undefined) {
-                return self.locale[is[0]] = value;
-            } else if (is.length === 0) {
-                return self.locale;
+        } else if (Array.isArray(path)){ // The function has been called recursively.
+            if(path.length === 1) {
+                return dotNotationHelper(object, path[0]);
+            } else if (path.length === 0) {
+                return false;
             } else {
-                if (self.locale.hasOwnProperty(is[0])) {
-                    return dotNotation(self.locale[is[0]], is.slice(1), value);
+                if (object.hasOwnProperty(path[0])) {
+                    return dotNotationHelper(object[path[0]], path.slice(1));
                 } else {
-                    return self.locale[is.join('.')] = is.join('.');
+                    return false;
                 }
             }
         }

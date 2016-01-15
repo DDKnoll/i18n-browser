@@ -25,19 +25,28 @@ module.exports = {
 		assert.equal(i18n.__('Hello %s, how are you today? How was your %s.', 'Marcus', i18n.__('weekend')), 'Hallo Marcus, wie geht es dir heute? Wie war dein Wochenende.');
 	},
 
-	'check plural': function () {
+	'check plural passed': function () {
 		var i18n = I18n(en);
 
-		var singular = i18n.__n('%s cat', '%s cats', 1);
-		var plural = i18n.__n('%s cat', '%s cats', 3);
+		var singular = i18n.__n('%s cat', 1);
+		var plural = i18n.__n('%s cat', 3);
 		assert.equal(singular, '1 cat');
 		assert.equal(plural, '3 cats');
 
 		var i18n = I18n(de);
-		singular = i18n.__n('%s cat', '%s cats', 1);
-		plural = i18n.__n('%s cat', '%s cats', 3);
+		singular = i18n.__n('%s cat', 1);
+		plural = i18n.__n('%s cat', 3);
 		assert.equal(singular, '1 Katze');
 		assert.equal(plural, '3 Katzen');
+	},
+
+	'check path': function() {
+		var i18n = I18n(en);
+
+		assert.equal(i18n.__('dog.puppy'), 'Puppy');
+
+		var i18n = I18n(de);
+		assert.equal(i18n.__('dog.puppy'), 'Hündchen');
 	},
 
 };
