@@ -1,19 +1,22 @@
 {
   "Hello": "Hallo",
-  "Hello %s, how are you today?": "Hallo %s, wie geht es dir heute?",
+  "Hello {{name}}, how are you today?": "Hallo {{name}}, wie geht es dir heute?",
   "weekend": "Wochenende",
-  "Hello %s, how are you today? How was your %s.": "Hallo %s, wie geht es dir heute? Wie war dein %s.",
+  "Hello {{name}}, how are you today? How was your {{time}}.": "Hallo {{name}}, wie geht es dir heute? Wie war dein {{time}}.",
   "Hi": "Hi",
   "Howdy": "Hallöchen",
-  "%s cat": {
-    "one": "%s Katze",
-    "other": "%s Katzen"
+  "{{count}} cat": {
+    "one": "{{count}} Katze",
+    "other": "{{count}} Katzen"
   },
-  "There is one monkey in the %%s": {
-    "one": "Im %%s sitzt ein Affe",
-    "other": "Im Baum sitzen %d Affen"
+  "There are {{count}} monkeys in the {{tree}}": {
+    "one": "Im {{tree}} sitzt ein Affe",
+    "other": "Im {{tree}} sitzen {{count}} Affen"
   },
-  "tree": "Baum",
+  "tree": {
+    "one": "Baum",
+    "other": "Bäume"
+  },
   "dog": {
     "puppy": "Hündchen"
   }

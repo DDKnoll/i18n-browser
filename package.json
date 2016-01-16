@@ -7,12 +7,11 @@
     "test": "test"
   },
   "dependencies": {
-    "sprintf": "^0.1.5"
+    "mustache": "^2.2.1"
   },
   "devDependencies": {
     "expresso": ">=0.9.2",
-    "js-yaml": "^3.4.3",
-    "i18n-2": "0.6.2"
+    "js-yaml": "^3.4.3"
   },
   "scripts": {
     "test": "expresso test/*"

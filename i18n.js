@@ -16,7 +16,7 @@
  */
 
 // dependencies
-var vsprintf = require("sprintf").vsprintf;
+var mustache = require("mustache");
 
 var i18n = module.exports = function (locale, opt) {
     'use strict';
@@ -92,24 +92,24 @@ var i18n = module.exports = function (locale, opt) {
     /*****
      * PUBLIC METHODS
      */
-    self.__n = function (pathOrSingular, countOrPlural, additionalOrCount) {
+    self.__n = function (pathOrSingular, data, count) {
         var msg, count;
         if (typeof countOrPlural === 'number') {
             var path = pathOrSingular;
             count = countOrPlural;
             msg = translate(path);
 
-            msg = vsprintf(parseInt(count, 10) > 1 ? msg.other : msg.one, Array.prototype.slice.call(arguments, 1));
+            msg = mustache.render(parseInt(count, 10) > 1 ? msg.other : msg.one, data);
         } else {
             var singular = pathOrSingular;
             var plural = countOrPlural;
             count = additionalOrCount;
             msg = translate(singular, plural);
 
-            msg = vsprintf(parseInt(count, 10) > 1 ? msg.other : msg.one, [count]);
+            msg = mustache.render(parseInt(count, 10) > 1 ? msg.other : msg.one, [count]);
 
             if (arguments.length > 3) {
-                msg = vsprintf(msg, Array.prototype.slice.call(arguments, 3));
+                msg = mustache.render(msg, Array.prototype.slice.call(arguments, 3));
             }
         }
 
@@ -118,9 +118,19 @@ var i18n = module.exports = function (locale, opt) {
 
     self.__ = function () {
         var msg = translate(arguments[0]);
+        if(typeof msg === 'object'){
+            if(msg.hasOwnProperty('one') && msg.hasOwnProperty('other')){
+                // This is a plural 
+                if(arguments[1] && arguments[1].hasOwnProperty('count') && arguments[1]['count'] !== 1){
+                    msg = msg['other']
+                } else {
+                    msg = msg['one']
+                }
+            }
+        }
 
         if (arguments.length > 1) {
-            msg = vsprintf(msg, Array.prototype.slice.call(arguments, 1));
+            msg = mustache.render(msg, arguments[1]);
         }
 
         return msg;

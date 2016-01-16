@@ -11,8 +11,8 @@ module.exports = {
 		var i18n = I18n(locales);
 
 		assert.equal(i18n.__('Hello'), 'Hello');
-		assert.equal(i18n.__('Hello %s, how are you today?', 'Marcus'), 'Hello Marcus, how are you today?');
-		assert.equal(i18n.__('Hello %s, how are you today? How was your %s.', 'Marcus', i18n.__('weekend')), 'Hello Marcus, how are you today? How was your weekend.');
+		assert.equal(i18n.__('Hello {{name}}, how are you today?', {name: 'Marcus'}), 'Hello Marcus, how are you today?');
+		assert.equal(i18n.__('Hello {{name}}, how are you today? How was your {{time}}.', {name: 'Marcus', time: i18n.__('weekend')}), 'Hello Marcus, how are you today? How was your weekend.');
 	},
 
 };
