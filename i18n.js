@@ -26,10 +26,10 @@ var i18n = module.exports = function (locale, opt) {
     if (!locale) {
         self.locale = {};
     } else if(locale && typeof locale.toObject == 'function' ) {
-		self.locale = locale.toObject(); // for immutable structures.
-	} else {
-		self.locale = locale;
-	}
+        self.locale = locale.toObject(); // for immutable structures.
+    } else {
+    self.locale = locale;
+    }
 
     // Copy over options
     for (var prop in opt) {
@@ -50,10 +50,9 @@ var i18n = module.exports = function (locale, opt) {
     }
 
     // converts string "Test.test" to its equivalent javascript Test.test
-    // 
     var dotNotation = function(path){
         var resolved = dotNotationHelper(self.locale, path);
-        return (resolved ? resolved : path);
+        return (resolved ? resolved : false);
     };
     // Recursive function that iterates down an object
     var dotNotationHelper = function (object, path) {
@@ -89,38 +88,63 @@ var i18n = module.exports = function (locale, opt) {
         return dotNotation(singular, plural ? { one: singular, other: plural } : undefined);
     }.bind(self);
 
+    //     /** arg[0], arg[1], ..., fnName */
+    // var __elseConstructor = function(fn, argumentsPassed){
+    //     // This calls the previous function with the default argument. The only difference is that it
+    //     // resolves the template string to the default value passed
+    //     return function(defaultString) {
+    //         argumentsPassed = argumentsPassed.concat(defaultString);
+            
+    //     }.bind(this);
+    // }.bind(self);
+
+    // /**
+    //  * This function should be called whenever a value is returned because it allows
+    //  * additional functions to be chained in a stream.
+    //  * example: return returnFalsey(arguments, '__');
+    //  */
+    // var __return = function(fn, argumentsPassed){
+    //     var returned = {
+    //         'else': __elseConstructor(fn, argumentsPassed)
+    //     }
+    //     console.log(returned);
+    //     return returned;
+    // }.bind(self);
+
     /*****
      * PUBLIC METHODS
      */
-    self.__n = function (pathOrSingular, data, count) {
-        var msg, count;
-        if (typeof countOrPlural === 'number') {
-            var path = pathOrSingular;
-            count = countOrPlural;
-            msg = translate(path);
+    // self.__n = function (pathOrSingular, data, count) {
+    //     if(!arguments[1]) arguments[1] = {}; //Data should exist;
+    //     var msg, count;
+    //     if (typeof countOrPlural === 'number') {
+    //         var path = pathOrSingular;
+    //         count = countOrPlural;
+    //         msg = translate(path);
 
-            msg = mustache.render(parseInt(count, 10) > 1 ? msg.other : msg.one, data);
-        } else {
-            var singular = pathOrSingular;
-            var plural = countOrPlural;
-            count = additionalOrCount;
-            msg = translate(singular, plural);
+    //         msg = mustache.render(parseInt(count, 10) > 1 ? msg.other : msg.one, data);
+    //     } else {
+    //         var singular = pathOrSingular;
+    //         var plural = countOrPlural;
+    //         count = additionalOrCount;
+    //         msg = translate(singular, plural);
 
-            msg = mustache.render(parseInt(count, 10) > 1 ? msg.other : msg.one, [count]);
+    //         msg = mustache.render(parseInt(count, 10) > 1 ? msg.other : msg.one, [count]);
 
-            if (arguments.length > 3) {
-                msg = mustache.render(msg, Array.prototype.slice.call(arguments, 3));
-            }
-        }
+    //         if (arguments.length > 3) {
+    //             msg = mustache.render(msg, Array.prototype.slice.call(arguments, 3));
+    //         }
+    //     }
 
-        return msg;
-    };
+    //     return msg ? msg : __return('__', arguments);
+    // };
 
-    self.__ = function () {
-        var msg = translate(arguments[0]);
+    self.__ = function (msg, data, defaultString) {
+        // Default is only used by the else chained command.
+        var msg = (defaultString !== undefined ? defaultString : translate(arguments[0]));
         if(typeof msg === 'object'){
             if(msg.hasOwnProperty('one') && msg.hasOwnProperty('other')){
-                // This is a plural 
+                // This is a plural
                 if(arguments[1] && arguments[1].hasOwnProperty('count') && arguments[1]['count'] !== 1){
                     msg = msg['other']
                 } else {
@@ -133,7 +157,15 @@ var i18n = module.exports = function (locale, opt) {
             msg = mustache.render(msg, arguments[1]);
         }
 
-        return msg;
+        if(msg){
+            return msg;
+        } else {
+            return {
+                else: function(defaultString){
+                    return this.__(msg, data, defaultString);
+                }.bind(self)
+            }
+        }
     };
 
     return self;
