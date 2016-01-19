@@ -64,3 +64,6 @@ var other = englishTranslator.__('cats', {count: 2});
 console.log(one); // 1 Katze
 console.log(other); // 2 Katzen
 ```
+
+
+#### I apologize for the versioning. The 1.* releases are still work in progress releases but I can't go back now!
