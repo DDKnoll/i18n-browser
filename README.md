@@ -5,8 +5,8 @@ Designed to work with webtranslateit.com API.
 ## Initialization
 ```
 var I18n = require('i18n');
-var englishTranslator = new I18n({
-  "Hello": "Hallo {{name}}, wie geht es dir heute?"
+var germanTranslator = new I18n({
+  "Hello": "Hallo {{name}}, wie geht es dir heute?",
   "cats": {
     "one": "{{count}} Katze",
     "other": "{{count}} Katzen"
@@ -19,24 +19,25 @@ var englishTranslator = new I18n({
 
 ## Basic Translation
 ```
-var HelloPerson = englishTranslator.__('Hello', {name: "Marcus"});
+var HelloPerson = germanTranslator.__('Hello', {name: "Marcus"});
 console.log(HelloPerson); // Hallo Marcus, wie geht es dir heute?
 ```
 
-## Else Fallback
+## default Fallback
 
+Third parameter is the default fallback.
 This is a good practice as it makes sure that at least one version of text will appear.
 ```
-var HelloPerson = englishTranslator.__(
+var HelloPerson = germanTranslator.__(
   'Not a key?',
-  {name: "Marcus"}
-).else("Hallo {{name}}, wie geht es dir heute?") ;
+  {name: "Marcus"},
+  "Hallo {{name}}, wie geht es dir heute?");
 console.log(HelloPerson); // Hallo Marcus, wie geht es dir heute?
 ```
 
 ## Keys are evaluated
 ```
-var puppy = englishTranslator.__('dog.puppy');
+var puppy = germanTranslator.__('dog.puppy');
 console.log(puppy); // Hündchen
 ```
 
@@ -59,11 +60,11 @@ Example data:
 and the usage:
 
 ```
-var one = englishTranslator.__('cats', {count: 1});
-var other = englishTranslator.__('cats', {count: 2});
+var one = germanTranslator.__('cats', {count: 1});
+var other = germanTranslator.__('cats', {count: 2});
 console.log(one); // 1 Katze
 console.log(other); // 2 Katzen
 ```
 
 
-#### I apologize for the versioning. The 1.* releases are still work in progress releases but I can't go back now!
+#### I apologize for the versioning. The 1.* releases are still work in progress releases but too late now!

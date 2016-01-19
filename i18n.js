@@ -141,7 +141,8 @@ var i18n = module.exports = function (locale, opt) {
 
     self.__ = function (msg, data, defaultString) {
         // Default is only used by the else chained command.
-        var msg = (defaultString !== undefined ? defaultString : translate(arguments[0]));
+        var msg = translate(arguments[0]);
+        msg = msg ? msg : defaultString;
         if(typeof msg === 'object'){
             if(msg.hasOwnProperty('one') && msg.hasOwnProperty('other')){
                 // This is a plural
@@ -157,15 +158,7 @@ var i18n = module.exports = function (locale, opt) {
             msg = mustache.render(msg, arguments[1]);
         }
 
-        if(msg){
-            return msg;
-        } else {
-            return {
-                else: function(defaultString){
-                    return this.__(msg, data, defaultString);
-                }.bind(self)
-            }
-        }
+        return msg;
     };
 
     return self;

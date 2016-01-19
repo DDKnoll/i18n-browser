@@ -10,7 +10,8 @@ module.exports = {
 
     'check non-existent': function () {
         var i18n = new I18n(en);
-        assert.equal(i18n.__('Hello?').else("I don't exist"), "I don't exist");
+        assert.equal(i18n.__('Hello?', {}, "I don't exist"), "I don't exist");
+        assert.equal(i18n.__('Hello'), "Hello");
     },
 
     'check singular': function () {
